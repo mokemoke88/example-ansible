@@ -1,6 +1,18 @@
 # FTPを使用した外部 -> 内部データ転送システム レシピ
 
-## フロントエンドサーバ構成
+## フロントエンドサーバ用
+
+usage:
+
+'''
+
+ansible-playbook -u centos -i staging setup.yml
+
+'''
+
+インベントリファイル(staging)は各自で用意.
+setup.yml は standalone グループをターゲットにして構成管理を実行する
+
 
 ### yum 追加レポジトリ
 
