@@ -1,0 +1,12 @@
+---
+# file: roles/pureftpd-setup/defaults/main.yml
+
+PUREFTPD_SETUP:
+  BIN: "/usr/sbin/pure-uploadscript"
+  SCRIPT: "/usr/local/bin/uploadscript.php"
+  DB:
+    host: localhost
+    port: 5432
+    user: pure_ftpd
+    password: pure_ftpd
+    db: pure_ftpd

@@ -1,0 +1,13 @@
+---
+# file: setup.yml
+
+- hosts: standalone
+  become: yes
+  roles:
+    - common/setup
+    - packages
+    - pureftpd/setup
+    - postgresql/setup
+    - nginx/setup
+
+

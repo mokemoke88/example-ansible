@@ -1,0 +1,55 @@
+---
+# file: roles/postgresql-setup/tasks/main.yml
+
+- name: install postgresql python interface
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - "python-psycopg2"
+
+- name: setup sudoers
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+  with_items:
+    - "etc/sudoers.d/postgres"
+
+- name: add user to group postgres
+  user:
+    name: "{{ POSTGRESQL_SETUP.admin }}"
+    groups: '{{ POSTGRESQL_SETUP.pggroup }}'
+
+- name: configuration pg_hba.conf
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+    owner: '{{ POSTGRESQL_SETUP.pguser }}'
+    group: '{{ POSTGRESQL_SETUP.pguser }}'
+    mode: 0600
+  with_items:
+    - "var/lib/pgsql/data/pg_hba.conf"
+  register: postgresql_setup_conf
+
+- name: restart postgresql
+  service:
+    name: postgresql
+    state: restarted
+  when: postgresql_setup_conf | changed
+
+- name: create database
+  postgresql_db:
+    name: '{{ POSTGRESQL_SETUP.pureftpd.db }}'
+    encoding: 'UTF-8'
+    login_user: '{{ POSTGRESQL_SETUP.pguser }}'
+  become_user: '{{ POSTGRESQL_SETUP.pguser }}'
+
+- name: create dbuser
+  postgresql_user:
+    db: '{{ POSTGRESQL_SETUP.pureftpd.db }}'
+    name: '{{ POSTGRESQL_SETUP.pureftpd.user }}'
+    password: '{{ POSTGRESQL_SETUP.pureftpd.password }}'
+    priv: ALL
+    state: present
+    login_user: '{{ POSTGRESQL_SETUP.pguser }}'
+  become_user: '{{ POSTGRESQL_SETUP.pguser }}'

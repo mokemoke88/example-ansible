@@ -1,0 +1,46 @@
+---
+# file: roles/packages/tasks/main.yml
+
+- name: install and update service php71 package.
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - "php71-php-cli"
+    - "php71-php-fpm"
+
+- name: install and update service package.
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - "pure-ftpd"
+    - "nginx"
+    - "php71-php-cli"
+    - "php71-php-fpm"
+
+- name: install and update postgresql packages.
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - "postgresql"
+    - "postgresql-server"
+  register:
+    packages_postgresql
+
+- name: check postgresql update or install
+  command: /usr/bin/postgresql-setup initdb
+  ignore_errors: true
+  when: packages_postgresql.changed
+
+- name: services enabled and started
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - "pure-ftpd"
+    - "php71-php-fpm"
+    - "postgresql"
+    - "nginx"

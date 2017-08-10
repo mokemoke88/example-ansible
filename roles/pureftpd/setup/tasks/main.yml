@@ -1,0 +1,43 @@
+---
+# file: roles/pureftpd-setup/tasks/main.yml
+
+- name: enable pure-uploadscript
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+  with_items:
+    - "etc/systemd/system/pure-uploadscript.service"
+
+- name: restart systemd and register serivce
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: pure-uploadscript.service
+    enabled: yes
+
+- name: pureftpd configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+  with_items:
+    - "etc/pure-ftpd/pure-ftpd.conf"
+    - "etc/pure-ftpd/pureftpd-pgsql.conf"
+  notify: restart pure-ftpd
+
+- name: template create table sql script
+  template:
+    src: 'create_db.sql.j2'
+    dest: '/var/tmp/create_db.sql'
+  changed_when: false
+
+- name: create authorize table
+  shell: PGPASSWORD={{ PUREFTPD_SETUP.DB.password }} psql -U {{ PUREFTPD_SETUP.DB.user }} -h {{ PUREFTPD_SETUP.DB.host }} -f /var/tmp/create_db.sql
+  changed_when: false
+
+- name: delete SQL script
+  file:
+    path: /var/tmp/create_db.sql
+    state: absent
+  changed_when: false
+
+

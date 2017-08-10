@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS "users" (
+  "User" TEXT NOT NULL,
+  "Password" TEXT NOT NULL,
+  "Uid" INTEGER NOT NULL default '-1',
+  "Gid" INTEGER NOT NULL default '-1',
+  "Dir" TEXT NOT NULL,
+  PRIMARY KEY ("User")
+) WITHOUT OIDS;

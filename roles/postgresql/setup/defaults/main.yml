@@ -1,0 +1,11 @@
+---
+# roles/postgresql-setup/defaults/main.yml
+
+POSTGRESQL_SETUP:
+  admin: 'centos'
+  pguser: 'postgres'
+  pggroup: 'postgres'
+  pureftpd:
+    db: 'pure_ftpd'
+    user: 'pure_ftpd'
+    password: 'pure_ftpd'

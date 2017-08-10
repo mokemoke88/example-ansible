@@ -1,0 +1,8 @@
+---
+# file: roles/pureftpd-setup/handlers/main.yml
+
+- name: restart pure-ftpd
+  service:
+    name: pure-ftpd
+    state: restarted
+

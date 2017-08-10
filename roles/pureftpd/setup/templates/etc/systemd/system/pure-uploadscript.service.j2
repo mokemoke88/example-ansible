@@ -1,0 +1,13 @@
+[Unit]
+Description=Pure-ftpd uploadscript lancher
+Before=pure-ftpd.service
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+ExecStart={{ PUREFTPD_SETUP.BIN }} -B -r {{ PUREFTPD_SETUP.SCRIPT }}
+
+[Install]
+WantedBy=multi-user.target
+
+

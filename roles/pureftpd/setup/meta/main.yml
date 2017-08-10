@@ -1,0 +1,5 @@
+---
+# file: roles/pureftpd-setup/meta/main.yml
+
+dependencies:
+  - { role: postgresql/setup }

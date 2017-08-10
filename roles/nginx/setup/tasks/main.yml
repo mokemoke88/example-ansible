@@ -1,0 +1,23 @@
+---
+# file: roles/nginx/setup/tasks/main.yml
+
+- name: configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+  with_items:
+    - etc/nginx/default.d/php71-fpm.conf
+  register: nginx_setup_config
+
+- name: restart
+  service:
+    name: nginx
+    state: restarted
+  when: nginx_setup_config | changed
+
+- name: contents distribute.
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+  with_items:
+    - usr/share/nginx/html/fpm-test.php
