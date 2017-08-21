@@ -4,11 +4,9 @@
 
 usage:
 
-'''
-
+```
 ansible-playbook -u centos -i staging setup.yml
-
-'''
+```
 
 インベントリファイル(staging)は各自で用意.
 setup.yml は standalone グループをターゲットにして構成管理を実行する
@@ -39,8 +37,7 @@ setup.yml は standalone グループをターゲットにして構成管理を�
  - PostgreSQL との連携によるユーザー認証
  - ファイルアップロードのアトミック処理
  - ユーザー毎の制限(トラフィック制限, 接続元制限, ストレージ使用量制限)
- - ファイルアップロード後のフック処理
- 
+ - ファイルアップロード後のフック処理  
    /usr/local/bin/uploadscript.php を別途用意すること
  
 ### HTTPサーバ
@@ -100,16 +97,13 @@ postgresql
 
 #### ユーザー
 
- - postgres
-
-  スーパーユーザでのみ接続可能( ホスト認証 )
+ - postgres  
+   スーパーユーザでのみ接続可能( ホスト認証 )
   
- - pure_ftpd
-
-  pure_ftpd データベース管理用( 127.0.0.1/32 / md5パスワード認証 )
+ - pure_ftpd  
+   pure_ftpd データベース管理用( 127.0.0.1/32 / md5パスワード認証 )
   
 #### データベース
 
- - pure_ftpd
-
-  pure_ftpd ユーザー管理用データベース
+ - pure_ftpd  
+   pure_ftpd ユーザー管理用データベース
